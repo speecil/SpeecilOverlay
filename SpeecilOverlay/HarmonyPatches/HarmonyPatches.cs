@@ -21,6 +21,7 @@ namespace SpeecilOverlay.HarmonyPatches
             SpeecilOverlay.Plugin.Log.Info("audio time sync POST FIX");
             SpeecilOverlay.Plugin.Log.Info(Plugin.currentSongName);
 
+
             // Create a new game object
             GameObject myGameObject = new GameObject("SpeecilOverlayController");
 

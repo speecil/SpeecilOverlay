@@ -7,6 +7,7 @@ using DataPuller.Data;
 using TMPro;
 using System.Threading;
 using UnityEngine.SceneManagement;
+using System;
 
 namespace SpeecilOverlay
 {
@@ -84,8 +85,10 @@ namespace SpeecilOverlay
                     return;
                 }
                 Log.Info("FOUND MY GAMEOBJECT");
-                Object.Destroy(GameObject.Find("SpeecilOverlayController"));
+                UnityEngine.Object.Destroy(GameObject.Find("SpeecilOverlayController"));
             }
+
+
         }
 
         void refreshMapValues(string jsonData)
