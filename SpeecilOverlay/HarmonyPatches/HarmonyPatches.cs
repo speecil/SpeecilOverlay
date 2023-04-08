@@ -75,7 +75,7 @@ namespace SpeecilOverlay.HarmonyPatches
             if(int.Parse(____comboText.text) == 0)
             {
                 // TODO: Run thread to hold the text color to be red
-                //Plugin.Instance.changeMiss();
+                Plugin.Instance.changeMiss();
             }
             Plugin.currentCombo = ____comboText.text;
         }

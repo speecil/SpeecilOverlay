@@ -27,7 +27,7 @@ namespace SpeecilOverlay
         public static bool didMiss = false;
         public static Font loadedFont;
 
-        /*
+        
         Thread _thread;
 
         public void changeMiss()
@@ -41,7 +41,7 @@ namespace SpeecilOverlay
             didMiss= true;
             Thread.Sleep(500);
             didMiss = false;
-        }*/
+        }
 
         public static TMP_FontAsset loadedFontTMPAsset;
         internal static Plugin Instance { get; private set; }
