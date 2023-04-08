@@ -1,0 +1,121 @@
+﻿using System;
+using System.Threading;
+using UnityEngine;
+
+namespace SpeecilOverlay
+{
+    public class SpeecilOverlayController : MonoBehaviour
+    {
+        public static SpeecilOverlayController Instance { get; private set; }
+
+        void OnGUI()
+        {
+
+            // Create a new GUIStyle with padding
+            GUIStyle myBoxStyle = new GUIStyle(GUI.skin.box);
+            myBoxStyle.padding = new RectOffset(10, 10, 10, 10);
+
+
+            // Create a new GUIStyle for the labels with a semi-transparent box
+            GUIStyle myLabelStyle = new GUIStyle(GUI.skin.label);
+            myLabelStyle.normal.textColor = Color.white;
+            myLabelStyle.font = Plugin.loadedFont;
+            myLabelStyle.fontStyle = FontStyle.Bold;
+            myLabelStyle.richText = true;
+
+            GUIStyle SmallerStyle = new GUIStyle(GUI.skin.label);
+            SmallerStyle.normal.textColor = Color.white;
+            SmallerStyle.font = Plugin.loadedFont;
+            SmallerStyle.fontSize = 60;
+            SmallerStyle.fontStyle = FontStyle.Bold;
+
+            // Create a new GUIStyle for the image with rounded corners and transparent background
+            GUIStyle myImageStyle = new GUIStyle(GUI.skin.box);
+            myImageStyle.border = new RectOffset(15, 15, 15, 15); // Increase the border size
+            myImageStyle.normal.background = null; // Set the background to null for a transparent texture
+
+
+            //Rect songSpritePos = new Rect(20, Screen.height - 300, 200, 200);
+            //Rect songNameTextPos = new Rect(songSpritePos.xMax + 20, Screen.height - 300, 300, 50);
+            //Rect currentAccTextPos = new Rect(songSpritePos.xMax + 20, songNameTextPos.yMax + 10, 200, 50);
+            //Rect songTimeTextPos = new Rect(songSpritePos.xMax + 20, currentAccTextPos.yMax + 10, 300, 50);
+
+            Rect currentRawScoreTextPos = new Rect(Screen.width - 450, Screen.height - 175, 200, 50);
+            Rect currentAccTextPos = new Rect(Screen.width - 450, currentRawScoreTextPos.yMin - 200, 200, 50);
+            Rect currentComboTextPos = new Rect(100, Screen.height - 200, 200, 50);
+            //Rect songTimeTextPos = new Rect((Screen.width - 300) / 2, 50, 300, 50);
+
+            // Change the button text based on the current mod state
+            //string songNameText = Plugin.currentSongName;
+            //string songAuthorText = Plugin.currentSongAuthor;
+            string currentComboText;
+            string songTimeText = Plugin.currentSongTime;
+            string songTimeEndText = Plugin.currentSongTimeEnd;
+            string currentAccText = $"<size=100>{Plugin.currentAccuracy}</size><size=130>%</size>";
+            string currentRawScoreText = $"<size=90>{Plugin.currentRawScore}</size>";
+            currentComboText = $"<size=100>x </size><size=120>{Plugin.currentCombo}</size>";
+            if (Plugin.didMiss)
+            {
+                currentComboText = $"<color=red><size=100>x </size><size=120>{Plugin.currentCombo}</size></color>";
+            }
+
+
+            // Convert the song time and end time strings to TimeSpan objects
+            //TimeSpan songTime = TimeSpan.FromSeconds(double.Parse(songTimeText));
+            //TimeSpan songTimeEnd = TimeSpan.FromSeconds(double.Parse(songTimeEndText));
+
+            // Format the song time and end time as mm:ss
+            // string formattedTime = string.Format("{0:mm\\:ss} / {1:mm\\:ss}", songTime, songTimeEnd);
+
+
+
+            /*
+            Texture songSprite = Plugin.currentSongImage.texture;
+            // Draw the rounded sprite with the desired size
+            GUI.Box(songSpritePos, GUIContent.none, myImageStyle);
+            GUI.DrawTexture(songSpritePos, songSprite, ScaleMode.ScaleToFit, true, 0, new Color(1, 1, 1, 1), 0, 0);
+
+            // Draw the box and label for the song name
+            GUIContent songNameContent = new GUIContent(songNameText);
+            Vector2 songNameSize = myLabelStyle.CalcSize(songNameContent);
+            Rect songNameBoxPos = new Rect(songNameTextPos.x, songNameTextPos.y, songNameSize.x + myBoxStyle.padding.horizontal, songNameSize.y + myBoxStyle.padding.vertical);
+            GUI.Box(songNameBoxPos, GUIContent.none, myBoxStyle);
+            Rect songNameLabelPos = new Rect(songNameBoxPos.x + myBoxStyle.padding.left,
+                                 songNameBoxPos.y + myBoxStyle.padding.top + (songNameBoxPos.height - songNameSize.y) / 2,
+                                 songNameSize.x, songNameSize.y);
+
+            GUI.Label(songNameLabelPos, songNameText, myLabelStyle);
+            
+            // Draw the box and label for the song time
+            GUIContent songTimeContent = new GUIContent(formattedTime);
+            Vector2 songTimeSize = myLabelStyle.CalcSize(songTimeContent);
+            Rect songTimeBoxPos = new Rect(songTimeTextPos.x, songTimeTextPos.y, songTimeSize.x + myBoxStyle.padding.horizontal, songTimeSize.y + myBoxStyle.padding.vertical);
+            //GUI.Box(songTimeBoxPos, GUIContent.none, myBoxStyle);
+            Rect songTimeLabelPos = new Rect(songTimeBoxPos.x + myBoxStyle.padding.left, songTimeBoxPos.y + (songTimeBoxPos.height - songTimeSize.y) / 2, songTimeSize.x, songTimeSize.y);
+            GUI.Label(songTimeLabelPos, formattedTime, myLabelStyle);
+            */
+            // Draw the box and label for the acc
+            GUIContent currentAccContent = new GUIContent(currentAccText);
+            Vector2 currentAccSize = myLabelStyle.CalcSize(currentAccContent);
+            Rect currentAccLabelPos = new Rect(currentAccTextPos.x, currentAccTextPos.y, currentAccSize.x, currentAccSize.y);
+
+            GUIContent currentRawScoreContent = new GUIContent(currentRawScoreText);
+            Vector2 currentRawScoreSize = SmallerStyle.CalcSize(currentRawScoreContent);
+            Rect currentRawScoreLabelPos = new Rect(currentRawScoreTextPos.x, currentRawScoreTextPos.y, currentRawScoreSize.x, currentRawScoreSize.y);
+
+            GUIContent currentComboContent = new GUIContent(currentComboText);
+            Vector2 currentComboSize = myLabelStyle.CalcSize(currentComboContent);
+            Rect currentComboLabelPos = new Rect(currentComboTextPos.x, currentComboTextPos.y, currentComboSize.x, currentComboSize.y);
+
+            // Draw the boxes
+            GUI.Box(new Rect(currentAccLabelPos.x, currentAccLabelPos.y, currentAccSize.x + myBoxStyle.padding.horizontal, currentAccSize.y + myBoxStyle.padding.vertical), GUIContent.none, myBoxStyle);
+            GUI.Box(new Rect(currentRawScoreLabelPos.x, currentRawScoreLabelPos.y, currentRawScoreSize.x + myBoxStyle.padding.horizontal, currentRawScoreSize.y + myBoxStyle.padding.vertical), GUIContent.none, myBoxStyle);
+            GUI.Box(new Rect(currentComboLabelPos.x, currentComboLabelPos.y, currentComboSize.x + myBoxStyle.padding.horizontal, currentComboSize.y + myBoxStyle.padding.vertical), GUIContent.none, myBoxStyle);
+
+            // Draw the labels
+            GUI.Label(new Rect(currentAccLabelPos.x + myBoxStyle.padding.left, currentAccLabelPos.y + (currentAccLabelPos.height - currentAccSize.y) / 2, currentAccSize.x, currentAccSize.y), currentAccText, myLabelStyle);
+            GUI.Label(new Rect(currentRawScoreLabelPos.x + myBoxStyle.padding.left, currentRawScoreLabelPos.y + (currentRawScoreLabelPos.height - currentRawScoreSize.y) / 2, currentRawScoreSize.x, currentRawScoreSize.y), currentRawScoreText, SmallerStyle);
+            GUI.Label(new Rect(currentComboLabelPos.x + myBoxStyle.padding.left, currentComboLabelPos.y + (currentComboLabelPos.height - currentComboSize.y) / 2, currentComboSize.x, currentComboSize.y), currentComboText, myLabelStyle);
+        }
+    }
+}
