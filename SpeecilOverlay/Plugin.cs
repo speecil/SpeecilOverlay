@@ -27,21 +27,12 @@ namespace SpeecilOverlay
         public static string currentCombo;
         public static bool didMiss = false;
         public static Font loadedFont;
-
+        public static float missTimer = 0;
         
-        Thread _thread;
-
         public void changeMiss()
         {
-            _thread = new Thread(holdRed);
-            _thread.Start();
-        }
-
-        public void holdRed()
-        {
-            didMiss= true;
-            Thread.Sleep(500);
-            didMiss = false;
+            didMiss = true;
+            missTimer = 0;
         }
 
         public static TMP_FontAsset loadedFontTMPAsset;
@@ -66,17 +57,14 @@ namespace SpeecilOverlay
             Log.Info("TEST");
             MapData.Instance.OnUpdate += refreshMapValues;
             loadedFont = Font.CreateDynamicFontFromOSFont("Teko", 80);
-
             Log.Info(loadedFont.name.ToString());
             Log.Info("AFTER FONT LOG");
-            loadedFontTMPAsset = TMP_FontAsset.CreateFontAsset(loadedFont);
-            Log.Info("AFTER FINAL FONT LOG");
 
         }
 
         private void SceneManager_activeSceneChanged(Scene arg0, Scene arg1)
         {
-            if (arg1.name == "GameCore")
+            /*if (arg1.name == "GameCore")
             {
                 Log.Info("GAME CORE");
                 if (!GameObject.Find("SpeecilOverlayController"))
@@ -86,10 +74,10 @@ namespace SpeecilOverlay
                 }
                 Log.Info("FOUND MY GAMEOBJECT");
                 UnityEngine.Object.Destroy(GameObject.Find("SpeecilOverlayController"));
-            }
-
-
+            }*/
         }
+
+
 
         void refreshMapValues(string jsonData)
         {

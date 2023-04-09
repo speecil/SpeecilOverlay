@@ -6,6 +6,7 @@ namespace SpeecilOverlay
 {
     public class SpeecilOverlayController : MonoBehaviour
     {
+
         private static GUIStyle boxStyle = null;
         public static GUIStyle BoxStyle
         {
@@ -23,11 +24,13 @@ namespace SpeecilOverlay
         private static GUIStyle myLabelStyle = null;
         public static GUIStyle MyLabelStyle
         {
+
             get
             {
                 if (myLabelStyle != null) return myLabelStyle;
 
                 // Define the style for the main label
+                myLabelStyle = new GUIStyle(GUI.skin.label);
                 myLabelStyle.normal.textColor = Color.white;
                 myLabelStyle.font = Plugin.loadedFont;
                 myLabelStyle.fontStyle = FontStyle.Bold;
@@ -45,11 +48,11 @@ namespace SpeecilOverlay
                 if (smallerStyle != null) return smallerStyle;
 
                 // Define the style for the main label
+                smallerStyle = new GUIStyle(GUI.skin.label);
                 smallerStyle.normal.textColor = Color.white;
                 smallerStyle.font = Plugin.loadedFont;
                 smallerStyle.fontSize = 60;
                 smallerStyle.fontStyle = FontStyle.Bold;
-
                 return smallerStyle;
             }
         }
@@ -71,7 +74,7 @@ namespace SpeecilOverlay
             string currentAccText = $"<size=100>{Plugin.currentAccuracy}</size><size=130>%</size>";
             string currentRawScoreText = $"<size=90>{Plugin.currentRawScore}</size>";
             currentComboText = $"<size=100>x </size><size=120>{Plugin.currentCombo}</size>";
-            
+
             // Set the text to be red if the user has missed
             if (Plugin.didMiss)
             {
@@ -90,7 +93,7 @@ namespace SpeecilOverlay
             Rect currentRawScoreLabelPos = new Rect(currentRawScoreTextPos.x, currentRawScoreTextPos.y, currentRawScoreSize.x, currentRawScoreSize.y);
             Vector2 currentComboSize = MyLabelStyle.CalcSize(currentComboContent);
             Rect currentComboLabelPos = new Rect(currentComboTextPos.x, currentComboTextPos.y, currentComboSize.x, currentComboSize.y);
-            
+
             // Draw the boxes
             GUI.Box(new Rect(currentAccLabelPos.x, currentAccLabelPos.y, currentAccSize.x + BoxStyle.padding.horizontal, currentAccSize.y + BoxStyle.padding.vertical), GUIContent.none, BoxStyle);
             GUI.Box(new Rect(currentRawScoreLabelPos.x, currentRawScoreLabelPos.y, currentRawScoreSize.x + BoxStyle.padding.horizontal, currentRawScoreSize.y + BoxStyle.padding.vertical), GUIContent.none, BoxStyle);
@@ -100,6 +103,17 @@ namespace SpeecilOverlay
             GUI.Label(new Rect(currentAccLabelPos.x + BoxStyle.padding.left, currentAccLabelPos.y + (currentAccLabelPos.height - currentAccSize.y) / 2, currentAccSize.x, currentAccSize.y), currentAccText, MyLabelStyle);
             GUI.Label(new Rect(currentRawScoreLabelPos.x + BoxStyle.padding.left, currentRawScoreLabelPos.y + (currentRawScoreLabelPos.height - currentRawScoreSize.y) / 2, currentRawScoreSize.x, currentRawScoreSize.y), currentRawScoreText, SmallerStyle);
             GUI.Label(new Rect(currentComboLabelPos.x + BoxStyle.padding.left, currentComboLabelPos.y + (currentComboLabelPos.height - currentComboSize.y) / 2, currentComboSize.x, currentComboSize.y), currentComboText, MyLabelStyle);
+        }
+        void Update()
+        {
+            if (Plugin.didMiss)
+            {
+                Plugin.missTimer += Time.deltaTime;
+                if (Plugin.missTimer >= 0.5)
+                {
+                    Plugin.didMiss = false;
+                }
+            }
         }
     }
 }
